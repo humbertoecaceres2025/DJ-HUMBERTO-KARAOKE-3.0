@@ -1,0 +1,747 @@
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 10%,#17204b 0%,transparent 35%),
+    radial-gradient(circle at 90% 80%,#35133d 0%,transparent 35%),
+    #04050c;
+  color:#f3f6ff;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  border:1px solid #293553;
+  background:#10162a;
+  color:white;
+  padding:10px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-1px);
+  border-color:#00eaff;
+  box-shadow:0 0 15px #00eaff33;
+}
+
+button:active{
+  transform:scale(.97);
+}
+
+.hidden{
+  display:none!important;
+}
+
+
+/* BOOT */
+
+.boot-screen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle,#20275c,#03040a 70%);
+}
+
+.boot-box{
+  width:min(600px,92%);
+  padding:50px 30px;
+  text-align:center;
+  background:#080b17dd;
+  border:1px solid #35406a;
+  border-radius:25px;
+  box-shadow:
+    0 0 80px #000,
+    0 0 40px #00eaff15;
+}
+
+.boot-logo{
+  font-size:clamp(40px,8vw,80px);
+  font-weight:900;
+  letter-spacing:4px;
+}
+
+.boot-logo span,
+.brand span{
+  background:linear-gradient(
+    90deg,
+    #00eaff,
+    #9b4dff,
+    #ff2584,
+    #ff7a00
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.boot-subtitle{
+  margin:15px 0 25px;
+  color:#8d9bc3;
+  letter-spacing:4px;
+  font-size:12px;
+}
+
+.boot-line{
+  width:70%;
+  height:2px;
+  margin:20px auto;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #00eaff,
+    #ff2584,
+    transparent
+  );
+}
+
+.boot-box p{
+  color:#7885a8;
+}
+
+
+/* TOP */
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:14px 22px;
+  background:#050711eF;
+  border-bottom:1px solid #1e2945;
+  backdrop-filter:blur(16px);
+}
+
+.brand{
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.brand-sub{
+  color:#7180a5;
+  font-size:9px;
+  letter-spacing:3px;
+  margin-top:3px;
+}
+
+.top-status{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.top-status span:first-child{
+  color:#4ff0ba;
+  font-size:12px;
+}
+
+#clock{
+  color:#8996b8;
+  font-size:12px;
+}
+
+.small-btn{
+  padding:8px 10px;
+}
+
+
+/* APP */
+
+.app{
+  width:min(1500px,96%);
+  margin:auto;
+  padding:18px 0 30px;
+}
+
+
+/* STAGE */
+
+.stage-card{
+  background:linear-gradient(
+    145deg,
+    #0a0e1d,
+    #070912
+  );
+  border:1px solid #202b49;
+  border-radius:20px;
+  padding:10px;
+  box-shadow:0 20px 60px #0008;
+  margin-bottom:18px;
+}
+
+.stage-top{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 12px;
+  color:#7583a8;
+  font-size:11px;
+}
+
+.live-indicator{
+  color:#ff537c;
+  animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+  50%{
+    opacity:.35;
+  }
+}
+
+.stage{
+  height:min(66vh,700px);
+  min-height:400px;
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+  background:#010208;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.stage-background{
+  position:absolute;
+  inset:-30%;
+  background:
+    radial-gradient(circle at 50% 45%,#24336f,#080b18 45%,#010208 75%);
+  animation:stageMove 12s linear infinite alternate;
+}
+
+@keyframes stageMove{
+  from{
+    transform:scale(1) rotate(0deg);
+  }
+  to{
+    transform:scale(1.12) rotate(3deg);
+  }
+}
+
+#mainVideo{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+}
+
+#visualizer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:3;
+  pointer-events:none;
+  opacity:.35;
+}
+
+.laser{
+  position:absolute;
+  z-index:4;
+  width:130%;
+  height:2px;
+  left:-15%;
+  background:#00eaff;
+  box-shadow:0 0 20px #00eaff;
+  opacity:.5;
+}
+
+.laser1{
+  top:35%;
+  transform:rotate(18deg);
+  animation:laser1 5s infinite alternate;
+}
+
+.laser2{
+  top:65%;
+  background:#ff2584;
+  box-shadow:0 0 20px #ff2584;
+  transform:rotate(-20deg);
+  animation:laser2 4s infinite alternate;
+}
+
+@keyframes laser1{
+  to{
+    transform:rotate(-18deg) translateY(80px);
+  }
+}
+
+@keyframes laser2{
+  to{
+    transform:rotate(20deg) translateY(-80px);
+  }
+}
+
+.song-info{
+  position:absolute;
+  z-index:6;
+  left:30px;
+  top:25px;
+  text-shadow:0 3px 15px #000;
+}
+
+#currentSingerDisplay{
+  color:#00eaff;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+
+#currentSong{
+  font-size:clamp(24px,4vw,58px);
+  margin:7px 0;
+}
+
+#currentArtist{
+  color:#a3afd0;
+}
+
+.lyrics-container{
+  position:absolute;
+  z-index:7;
+  bottom:35px;
+  left:5%;
+  right:5%;
+  text-align:center;
+  text-shadow:0 4px 20px #000;
+}
+
+.current-lyric{
+  font-size:clamp(25px,4vw,60px);
+  font-weight:900;
+}
+
+.next-lyric{
+  margin-top:12px;
+  color:#aeb9d7;
+  font-size:clamp(15px,2vw,25px);
+}
+
+.score-panel{
+  position:absolute;
+  z-index:8;
+  right:22px;
+  top:22px;
+  min-width:90px;
+  padding:10px;
+  border:1px solid #34446e;
+  border-radius:12px;
+  background:#070b19cc;
+  text-align:center;
+  backdrop-filter:blur(8px);
+}
+
+.score-panel small{
+  display:block;
+  color:#8290b3;
+}
+
+.score-panel strong{
+  display:block;
+  font-size:38px;
+  color:#55f2bd;
+}
+
+.countdown{
+  position:absolute;
+  z-index:20;
+  font-size:150px;
+  font-weight:900;
+  color:#00eaff;
+  text-shadow:0 0 50px #00eaff;
+}
+
+
+/* TRANSPORT */
+
+.transport{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 4px 3px;
+  flex-wrap:wrap;
+}
+
+.transport-btn{
+  width:45px;
+  height:42px;
+}
+
+.transport-btn.play{
+  width:55px;
+  background:linear-gradient(
+    135deg,
+    #00cfff,
+    #914dff
+  );
+  border:0;
+}
+
+#progressBar{
+  flex:1;
+  min-width:160px;
+}
+
+#timeDisplay{
+  color:#8996b7;
+  font-size:12px;
+}
+
+.master-control{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+
+/* PANELS */
+
+.two-column{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.three-column{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.panel{
+  padding:17px;
+  background:
+    linear-gradient(
+      145deg,
+      #0c1020,
+      #080b15
+    );
+  border:1px solid #202b49;
+  border-radius:17px;
+  box-shadow:0 12px 40px #0005;
+}
+
+.panel h2{
+  margin:0 0 15px;
+  font-size:17px;
+  letter-spacing:.5px;
+}
+
+.panel h3{
+  color:#8794b5;
+  font-size:13px;
+  margin-top:20px;
+}
+
+.file-row{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.file-button{
+  display:inline-block;
+  padding:10px 13px;
+  border:1px solid #293553;
+  border-radius:9px;
+  background:#10162a;
+  cursor:pointer;
+}
+
+.file-button:hover{
+  border-color:#00eaff;
+}
+
+.file-button input{
+  display:none;
+}
+
+.search,
+.singer-input input,
+.panel textarea,
+.panel select,
+.panel>input{
+  width:100%;
+  padding:11px;
+  margin-bottom:10px;
+  background:#050811;
+  border:1px solid #263250;
+  border-radius:9px;
+  color:white;
+  outline:none;
+}
+
+.panel textarea{
+  min-height:180px;
+  resize:vertical;
+}
+
+.search:focus,
+.panel input:focus,
+.panel select:focus,
+.panel textarea:focus{
+  border-color:#00eaff;
+  box-shadow:0 0 12px #00eaff16;
+}
+
+.singer-input{
+  display:flex;
+  gap:8px;
+}
+
+.singer-input input{
+  margin:0;
+}
+
+.list{
+  max-height:290px;
+  overflow:auto;
+}
+
+.list:empty:after{
+  content:"Sin elementos";
+  color:#697695;
+}
+
+.list-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 4px;
+  border-bottom:1px solid #182139;
+}
+
+.list-item:hover{
+  background:#11172a;
+}
+
+.item-info{
+  flex:1;
+  min-width:0;
+}
+
+.item-info strong{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.item-info small{
+  color:#7180a4;
+}
+
+.microphone label,
+.panel>label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:13px 0;
+  color:#a1adca;
+}
+
+.microphone label input,
+.panel>label input{
+  flex:1;
+}
+
+.microphone select{
+  width:100%;
+  margin-bottom:10px;
+}
+
+.mic-buttons{
+  display:flex;
+  gap:8px;
+}
+
+.mic-buttons button{
+  flex:1;
+}
+
+.wide-btn{
+  width:100%;
+  margin-bottom:9px;
+}
+
+.emergency{
+  border-color:#ff4f63;
+  color:#ff8291;
+}
+
+.info{
+  color:#7583a6;
+  font-size:12px;
+  line-height:1.5;
+}
+
+
+/* PROJECTOR */
+
+body.projector .topbar,
+body.projector .two-column,
+body.projector .three-column,
+body.projector footer{
+  display:none;
+}
+
+body.projector .app{
+  width:100%;
+  padding:0;
+}
+
+body.projector .stage-card{
+  border:0;
+  border-radius:0;
+  margin:0;
+  padding:0;
+  height:100vh;
+}
+
+body.projector .stage{
+  height:100vh;
+  border-radius:0;
+}
+
+
+/* FOOTER */
+
+footer{
+  text-align:center;
+  padding:25px;
+  border-top:1px solid #171e32;
+  color:#657292;
+  font-size:12px;
+}
+
+
+/* SCROLL */
+
+::-webkit-scrollbar{
+  width:7px;
+}
+
+::-webkit-scrollbar-track{
+  background:#060811;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#263250;
+  border-radius:10px;
+}
+
+
+/* MOBILE */
+
+@media(max-width:1050px){
+
+  .three-column{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:750px){
+
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .top-status{
+    width:100%;
+  }
+
+  .two-column,
+  .three-column{
+    grid-template-columns:1fr;
+  }
+
+  .app{
+    width:98%;
+  }
+
+  .stage{
+    min-height:340px;
+    height:55vh;
+  }
+
+  .song-info{
+    left:15px;
+    top:15px;
+  }
+
+  .lyrics-container{
+    bottom:18px;
+  }
+
+  .current-lyric{
+    font-size:27px;
+  }
+
+  .score-panel{
+    right:10px;
+    top:10px;
+  }
+
+  .transport{
+    justify-content:center;
+  }
+
+  #progressBar{
+    flex-basis:100%;
+    order:10;
+  }
+
+  .brand{
+    font-size:23px;
+  }
+
+}
+
+@media(max-width:450px){
+
+  .stage{
+    min-height:300px;
+  }
+
+  .current-lyric{
+    font-size:22px;
+  }
+
+  .next-lyric{
+    font-size:14px;
+  }
+
+  .countdown{
+    font-size:100px;
+  }
+
+}
