@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050711">
+  <title>DJ HUMBERTO KARAOKE 3.0 PRO</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="bootScreen" class="boot-screen">
+  <div class="boot-box">
+    <div class="boot-logo">DJ <span>HUMBERTO</span></div>
+    <div class="boot-subtitle">HC PRO • KARAOKE SYSTEM 3.0</div>
+    <div class="boot-line"></div>
+    <p>Sistema profesional de karaoke</p>
+    <button id="startSystem" class="btn btn-primary">
+      ▶ INICIAR SISTEMA
+    </button>
+  </div>
+</div>
+
+<header class="topbar">
+
+  <div class="brand-area">
+    <div class="brand">DJ <span>HUMBERTO</span></div>
+    <div class="brand-sub">HC PRO • PROFESSIONAL KARAOKE SYSTEM</div>
+  </div>
+
+  <div class="top-status">
+    <span id="systemStatus">● SISTEMA LISTO</span>
+    <span id="clock">00:00:00</span>
+
+    <button id="fullscreenBtn" class="small-btn">⛶</button>
+    <button id="projectorBtn" class="small-btn">📽</button>
+    <button id="secondScreenBtn" class="small-btn">🖥</button>
+  </div>
+
+</header>
+
+<main id="karaokeApp" class="app hidden">
+
+  <!-- ESCENARIO -->
+
+  <section class="stage-card">
+
+    <div class="stage-top">
+      <span class="live-indicator">● KARAOKE EN VIVO</span>
+      <span id="currentMode">MODO KARAOKE</span>
+    </div>
+
+    <div id="stage" class="stage">
+
+      <video id="mainVideo" playsinline></video>
+
+      <div class="stage-background"></div>
+
+      <canvas id="visualizer"></canvas>
+
+      <div class="laser laser1"></div>
+      <div class="laser laser2"></div>
+
+      <div class="song-info">
+
+        <div id="currentSingerDisplay">
+          SIN CANTANTE
+        </div>
+
+        <h1 id="currentSong">
+          DJ HUMBERTO KARAOKE
+        </h1>
+
+        <div id="currentArtist"></div>
+
+      </div>
+
+      <div class="lyrics-container">
+
+        <div id="currentLyric" class="current-lyric">
+          Carga una canción para comenzar
+        </div>
+
+        <div id="nextLyric" class="next-lyric">
+          DJ HUMBERTO • HC PRO
+        </div>
+
+      </div>
+
+      <div class="score-panel">
+        <small>ACTUACIÓN</small>
+        <strong id="scoreValue">0</strong>
+      </div>
+
+      <div id="countdown" class="countdown hidden">
+        3
+      </div>
+
+    </div>
+
+    <!-- TRANSPORTE -->
+
+    <div class="transport">
+
+      <button id="previousBtn" class="transport-btn">⏮</button>
+
+      <button id="playBtn" class="transport-btn play">
+        ▶
+      </button>
+
+      <button id="stopBtn" class="transport-btn">
+        ■
+      </button>
+
+      <button id="nextBtn" class="transport-btn">
+        ⏭
+      </button>
+
+      <button id="shuffleBtn" class="transport-btn">
+        🔀
+      </button>
+
+      <button id="repeatBtn" class="transport-btn">
+        🔁
+      </button>
+
+      <input
+        id="progressBar"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+      <span id="timeDisplay">
+        00:00 / 00:00
+      </span>
+
+      <label class="master-control">
+        🔊
+        <input
+          id="masterVolume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.90"
+        >
+      </label>
+
+    </div>
+
+  </section>
+
+
+  <!-- BIBLIOTECA / COLA -->
+
+  <section class="two-column">
+
+    <div class="panel">
+
+      <h2>🎵 BIBLIOTECA MUSICAL</h2>
+
+      <div class="file-row">
+
+        <label class="file-button">
+          📂 Cargar archivos
+          <input
+            id="mediaFiles"
+            type="file"
+            multiple
+            accept="audio/*,video/*"
+          >
+        </label>
+
+        <label class="file-button">
+          📁 Carpeta
+          <input
+            id="folderFiles"
+            type="file"
+            webkitdirectory
+            multiple
+          >
+        </label>
+
+      </div>
+
+      <input
+        id="librarySearch"
+        class="search"
+        placeholder="🔎 Buscar canción o artista..."
+      >
+
+      <div id="libraryList" class="list"></div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>🎤 COLA DE CANTANTES</h2>
+
+      <div class="singer-input">
+
+        <input
+          id="singerName"
+          placeholder="Nombre del cantante"
+        >
+
+        <button id="addCurrentToQueue">
+          ＋ AGREGAR
+        </button>
+
+      </div>
+
+      <div id="queueList" class="list"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- MICROFONOS -->
+
+  <section class="three-column">
+
+    <div class="panel microphone">
+
+      <h2>🎙 MICRÓFONO 1</h2>
+
+      <select id="mic1Device">
+        <option value="">Dispositivo predeterminado</option>
+      </select>
+
+      <div class="mic-buttons">
+
+        <button id="mic1On">
+          🎙 ACTIVAR
+        </button>
+
+        <button id="mic1Mute">
+          🔇 MUTE
+        </button>
+
+      </div>
+
+      <label>
+        Volumen
+        <input
+          id="mic1Volume"
+          type="range"
+          min="0"
+          max="2"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <label>
+        Ganancia
+        <input
+          id="mic1Gain"
+          type="range"
+          min="0"
+          max="3"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <label>
+        Echo
+        <input
+          id="mic1Echo"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.15"
+        >
+      </label>
+
+      <label>
+        Reverb
+        <input
+          id="mic1Reverb"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.10"
+        >
+      </label>
+
+    </div>
+
+
+    <div class="panel microphone">
+
+      <h2>🎙 MICRÓFONO 2</h2>
+
+      <select id="mic2Device">
+        <option value="">Dispositivo predeterminado</option>
+      </select>
+
+      <div class="mic-buttons">
+
+        <button id="mic2On">
+          🎙 ACTIVAR
+        </button>
+
+        <button id="mic2Mute">
+          🔇 MUTE
+        </button>
+
+      </div>
+
+      <label>
+        Volumen
+        <input
+          id="mic2Volume"
+          type="range"
+          min="0"
+          max="2"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <label>
+        Ganancia
+        <input
+          id="mic2Gain"
+          type="range"
+          min="0"
+          max="3"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <label>
+        Echo
+        <input
+          id="mic2Echo"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.15"
+        >
+      </label>
+
+      <label>
+        Reverb
+        <input
+          id="mic2Reverb"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.10"
+        >
+      </label>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>🎛 CONTROL KARAOKE</h2>
+
+      <label>
+        Velocidad
+        <input
+          id="speedControl"
+          type="range"
+          min="0.75"
+          max="1.25"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <label>
+        Tono básico
+        <input
+          id="pitchControl"
+          type="range"
+          min="0.80"
+          max="1.20"
+          step="0.01"
+          value="1"
+        >
+      </label>
+
+      <button id="autoNextBtn" class="wide-btn">
+        AUTO NEXT: ACTIVADO
+      </button>
+
+      <button id="scoreBtn" class="wide-btn">
+        ⭐ SCORE: ACTIVADO
+      </button>
+
+      <button id="countdownBtn" class="wide-btn">
+        ⏱ CUENTA REGRESIVA
+      </button>
+
+      <button id="emergencyBtn" class="wide-btn emergency">
+        🚨 CANCIÓN DE EMERGENCIA
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- LETRAS -->
+
+  <section class="two-column">
+
+    <div class="panel">
+
+      <h2>📝 LETRAS SINCRONIZADAS</h2>
+
+      <label class="file-button">
+        📄 Cargar LRC / SRT / TXT
+        <input
+          id="lyricsFiles"
+          type="file"
+          multiple
+          accept=".lrc,.srt,.txt"
+        >
+      </label>
+
+      <button id="editorFocusBtn">
+        ✏ EDITAR LETRA
+      </button>
+
+      <textarea
+        id="lyricsEditor"
+        placeholder="Pega o escribe aquí la letra..."
+      ></textarea>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>🎤 CANTANTE ACTUAL</h2>
+
+      <input
+        id="currentSinger"
+        placeholder="Nombre del cantante"
+      >
+
+      <button id="saveSingerBtn">
+        💾 GUARDAR
+      </button>
+
+      <h3>📜 HISTORIAL</h3>
+
+      <div id="historyList" class="list"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DJ IDS -->
+
+  <section class="three-column">
+
+    <div class="panel">
+
+      <h2>🎙 DJ HUMBERTO IDS</h2>
+
+      <label class="file-button">
+        🎵 Cargar IDs
+        <input
+          id="idFiles"
+          type="file"
+          multiple
+          accept="audio/*"
+        >
+      </label>
+
+      <button id="playIdBtn">
+        ▶ ID AHORA
+      </button>
+
+      <button id="autoIdBtn">
+        AUTO ID: OFF
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>⏱ INTERVALO ID</h2>
+
+      <select id="idInterval">
+        <option value="5">Cada 5 minutos</option>
+        <option value="10" selected>Cada 10 minutos</option>
+        <option value="15">Cada 15 minutos</option>
+        <option value="30">Cada 30 minutos</option>
+      </select>
+
+      <label>
+        Volumen ID
+        <input
+          id="idVolume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.90"
+        >
+      </label>
+
+      <p class="info">
+        El sistema baja automáticamente la música mientras suena la identificación.
+      </p>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>⏺ GRABACIÓN</h2>
+
+      <button id="recordStart">
+        🔴 GRABAR
+      </button>
+
+      <button id="recordStop" disabled>
+        ⏹ DETENER
+      </button>
+
+      <div id="recordStatus" class="info">
+        Preparado.
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  DJ HUMBERTO • HC PRO • KARAOKE 3.0 PRO
+</footer>
+
+<script src="karaoke.js"></script>
+
+</body>
+</html>
